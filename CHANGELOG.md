@@ -1,5 +1,93 @@
-### 4.0.0 (planning, request for comments)
-*NOT RELEASED*
+# Changelog
+
+### 4.3.0
+*Released 2/23/21*
+* Fix bug in Format.cookie() [!277](https://git.nullivex.com/kado/kado/-/merge_requests/277)
+* Use +00:00 for SQL timezone [!288](https://git.nullivex.com/kado/kado/-/merge_requests/288)
+* Raise cluster default timeouts [!284](https://git.nullivex.com/kado/kado/-/merge_requests/284)
+* Fix URI Decoding [!283](https://git.nullivex.com/kado/kado/-/merge_requests/283)
+* Parameters are now sent through JSON first [!282](https://git.nullivex.com/kado/kado/-/merge_requests/282)
+* Improved query string handling [!274](https://git.nullivex.com/kado/kado/-/merge_requests/274)
+* Add BigInteger library [!271](https://git.nullivex.com/kado/kado/-/merge_requests/271)
+* Add PromiseMore library [!264](https://git.nullivex.com/kado/kado/-/merge_requests/264)
+* Add LogRelay via UDP [!261](https://git.nullivex.com/kado/kado/-/merge_requests/261)
+* Add logging support [!253](https://git.nullivex.com/kado/kado/-/merge_requests/253)
+* Continuously build Kado against Node 10, 12, 14 [!289](https://git.nullivex.com/kado/kado/-/merge_requests/289)
+* Fix static file handling with query args [!275](https://git.nullivex.com/kado/kado/-/merge_requests/275)
+* Add Cookie Builder [!276](https://git.nullivex.com/kado/kado/-/merge_requests/276)
+* Add HTTP request logger [!256](https://git.nullivex.com/kado/kado/-/merge_requests/256)
+* Add Mutlipart processing [!244](https://git.nullivex.com/kado/kado/-/merge_requests/244)
+* Add foreign key support to schema [!222](https://git.nullivex.com/kado/kado/-/merge_requests/222)
+* Various other improvements and fixes see [%v4.3.0](https://git.nullivex.com/kado/kado/-/milestones/5#tab-merge-requests)
+
+### 4.2.1
+*Released 5/7/20*
+* Add MariaDB support.
+* Add notify support for showing notifications to end users, such as a save
+being successful. This is done with `req.notify('some message')` which defaults
+to a level of `ok` or success, if there is an error
+`req.notify(new Error('some Error'))` sending an error object will automatically
+set a level of 'error' or failure. Lastly, custom levels support is done through
+class names such as:
+```js
+class MyWarning extends Error {}
+req.notify(new MyWarning('something is broken'))
+```
+NOTE: Sessions must be enabled for notifications to be saved.
+In order to show notifications they are made available through the
+`req.locals._session._notify` variable. Here is a template example:
+```html
+{{#_notify}}<div class="notify notify-{{level}">{{message}}</div>{{/_notify}}
+```
+* Add more core `FS` modules into the `FileSystem` library to add more
+convenience.
+* Various fixes to documentation.
+
+### 4.2.0
+*Released 4/15/20*
+* Add new Model.js for creating and working with Database records.
+* Add new Mustache.js for string templating.
+* Add new MySQL database engine.
+* Add new Query.js for building queries for databases.
+* Add new QueryCache.js for caching queries from a database in a database.
+* Add new Schema.js for building tables for databases.
+* Validate.isType upgraded to be more consistent and predictable.
+* Parser adds `requestBody` parser to assist with input decoding.
+* Router adds `res.json()` for JSON output.
+* Router adds `res.redirect()` for location changes.
+* Router adds `res.sendFile()` for sending files.
+* Session adds `SessionStoreSQL` for SQL backed sessions from databases.
+* Cluster adds `dev` mode and `disableMaster` to help with running in single
+process mode.
+* Cluster now automatically establishes worker counts unless told otherwise.
+* Commands can now return undefined as a valid exit value
+* Fix to only setup cluster master when available.
+* Fix to app startup when commands are present.
+* HyperTextServer now accepts an array of hosts to listen on.
+* Cluster no longer recycles workers from reaching a maxConnection ceiling by
+default.
+* Fix to properly close database connections on stop.
+* Add `HyperText.Proxy` to HyperText.js which provides an HTTP reverse proxy.
+* Make the testing of extended types more robust, to ensure extension of a
+proper parent.
+* Fix the promise chain when starting and stopping connect systems from
+Application.
+
+### 4.1.0
+*Released 3/9/2020*
+* Add new Mime.js library for looking up file types from extensions.
+* Add new ETag.js library for generating ETag headers for cache protection.
+* Implement the Mime.js in the included HyperText static server.
+* Implement the ETag.js in the included HyperText server.
+* Multiple fixes and changes to the documents.
+* Add new methods to the Parser library.
+
+### 4.0.1
+*Released 2/20/2020*
+* Fix the PathExp system to properly handle matching against multiple inputs.
+
+### 4.0.0
+*Released 2/20/2020*
 * BREAKING CHANGES, not compatible with Kado 3.x out of the box, see
 https://kado.org/content/upgrading-4.x for more.
 * No interfaces a provided by default.
@@ -30,8 +118,78 @@ https://kado.org/content/upgrading-4.x for more.
  panels need to be split in however many places this can be done by simply,
  starting multiple instances and using webserver rules to deny or allow urls.
 
+### 3.10.6
+*Released 2/12/2020*
+* This is the more than likely the last release before Kado 4.0 is released.
+* A warning is due now that Kado 4 will be complete incompatible with Kado 3 as
+Kado 4.0 fully realizes ES6. For the future, Kado 3 will continue to be
+maintained within the same repository as Kado 4 in a separate branch. However
+due to limitations on NPM, Kado 3 versions will be released as the kado-legacy
+package.
+* A further warning that Kado 4 will be changing from an MIT license to Lesser
+GPL Version 3+ please plan accordingly!
+* Update and test against latest dependencies
+   * bcrypt                      ^3.0.7  →   ^3.0.8
+   * commander                   ^4.1.0  →   ^4.1.1
+   * connect-session-sequelize   ^6.0.0  →   ^6.1.1
+   * flag-icon-css               ^3.4.5  →   ^3.4.6
+   * highlight.js               ^9.18.0  →  ^9.18.1
+   * pdfmake                    ^0.1.63  →  ^0.1.64
+   * request                    ^2.88.0  →  ^2.88.2
+   * rimraf                      ^3.0.1  →   ^3.0.2
+   * sequelize                  ^5.21.3  →  ^5.21.4
+   * webpack                    ^4.41.5  →  ^4.41.6
+
+### 3.10.5
+*Released 1/30/2020*
+* Update to latest dependencies
+   * codemirror             ^5.50.2  →  ^5.51.0
+   * cron                    ^1.7.2  →   ^1.8.2
+   * highlight.js           ^9.17.1  →  ^9.18.0
+   * mocha                   ^7.0.0  →   ^7.0.1
+   * mustache                ^3.2.1  →   ^4.0.0
+   * popper.js              ^1.16.0  →  ^1.16.1
+   * rimraf                  ^3.0.0  →   ^3.0.1
+   * terser-webpack-plugin   ^2.3.1  →   ^2.3.4
+   * validator              ^12.1.0  →  ^12.2.0
+
+
+### 3.10.4
+*Released 1/5/2020*
+* Update to solve security warnings
+   * codemirror             ^5.49.2  →  ^5.50.2
+   * commander               ^4.0.1  →   ^4.1.0
+   * highlight.js           ^9.16.2  →  ^9.17.1
+   * mocha                   ^6.2.2  →   ^7.0.0
+   * mustache                ^3.1.0  →   ^3.2.1
+   * mysql2                  ^2.0.2  →   ^2.1.0
+   * nodemon                 ^2.0.1  →   ^2.0.2
+   * pdfmake                ^0.1.62  →  ^0.1.63
+   * sequelize              ^5.21.2  →  ^5.21.3
+   * terser-webpack-plugin   ^2.2.2  →   ^2.3.1
+   * tui-editor              ^1.4.9  →  ^1.4.10
+   * webpack                ^4.41.2  →  ^4.41.5
+
+
+### 3.10.3
+*Released 12/8/2019*
+* Update to solve security vulnerabilities
+   * bluebird               ^3.7.1  →  ^3.7.2
+   * bootstrap              ^4.3.1  →  ^4.4.1
+   * mysql2                 ^2.0.1  →  ^2.0.2
+   * terser-webpack-plugin  ^2.2.1  →  ^2.2.2
+   * tui-editor             ^1.4.8  →  ^1.4.9
+
+More information here: https://github.com/KadoOrg/kado/network/alert/package-lock.json/serialize-javascript/open
+
+### 3.10.2
+*Released 12/1/2019*
+* Update to latest dependencies
+  * bluebird   ^3.7.1  →  ^3.7.2
+  * bootstrap  ^4.3.1  →  ^4.4.1
+
 ### 3.10.1
-* Released 11/23/2019*
+*Released 11/23/2019*
 * Update to latest dependencies
   * bcrypt       ^3.0.6  →   ^3.0.7
   * commander    ^4.0.0  →   ^4.0.1
@@ -609,7 +767,7 @@ handling consistent. Includes `base64-js` into the browser bundle as well.
 content to be edited.
 * Change default `{{{_baseUrl}}}` to `''` in order to support more installs
 by default.
-* Use `{{{_baseUrl}}` when loading all assets.
+* Use `{{{_baseUrl}}}` when loading all assets.
 * URI usages should always use `{{{_u.name}}}` to avoid escaping issues.
 * Fix bug in `staff` module when deleting a staff member would fail to redirect.
 * Use TUI Viewer on content display pages.

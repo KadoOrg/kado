@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 /**
  * Kado - High Quality JavaScript Libraries based on ES6+ <https://kado.org>
  * Copyright © 2013-2020 Bryan Tong, NULLIVEX LLC. All rights reserved.
@@ -19,22 +19,22 @@
  * along with Kado.  If not, see <https://www.gnu.org/licenses/>.
  */
 const runner = require('../lib/TestRunner').getInstance('Kado')
-const { expect } = require('../lib/Validate')
+const Assert = require('../lib/Assert')
 const Profiler = require('../lib/Profiler')
-runner.suite('Profiler',(it)=>{
-  let profiler = new Profiler()
-  it('should construct',() => {
-    expect.isType('Profiler',new Profiler())
+runner.suite('Profiler', (it) => {
+  const profiler = new Profiler()
+  it('should construct', () => {
+    Assert.isType('Profiler', new Profiler())
   })
-  it('should accept query addition',()=>{
-    expect.eq(profiler.addQuery('SELECT * FROM FOO',1001),1)
+  it('should accept query addition', () => {
+    Assert.eq(profiler.addQuery('SELECT * FROM FOO', 1001), 1)
   })
-  it('should start the rendering timer',()=>{
-    let now = + new Date()
-    expect.maximum(profiler.startRender(),now)
+  it('should start the rendering timer', () => {
+    const now = +new Date()
+    Assert.maximum(profiler.startRender(), now)
   })
-  it('should build a profile',()=>{
-    expect.match(/<div id="kado-profiler">/,profiler.build().HTML)
+  it('should build a profile', () => {
+    Assert.match(/<div id="kado-profiler">/, profiler.build().HTML)
   })
 })
-if(require.main === module) runner.execute().then(code => process.exit(code))
+if (require.main === module) runner.execute().then(code => process.exit(code))

@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 /**
  * Kado - High Quality JavaScript Libraries based on ES6+ <https://kado.org>
  * Copyright © 2013-2020 Bryan Tong, NULLIVEX LLC. All rights reserved.
@@ -19,57 +19,66 @@
  * along with Kado.  If not, see <https://www.gnu.org/licenses/>.
  */
 const runner = require('../lib/TestRunner').getInstance('Kado')
-const { expect } = require('../lib/Validate')
+const Assert = require('../lib/Assert')
 const Search = require('../lib/Search')
-runner.suite('Search',(it)=>{
-  let search = new Search()
-  let ourModule = ()=>{
-    return new Promise((resolve)=>{
-      resolve([
-        {
-          uri: '/foo',
-          title: 'foo',
-          description: 'some Foo',
-          updatedAt: new Date()
-        },
-        {
-          uri: '/foo1',
-          title: 'foo1',
-          description: 'some Foo1',
-          updatedAt: new Date()
-        }
-      ])
-    })
+class OurSearch extends Search.SearchEngine {
+  search (options) {
+    Assert.isType('Object', options)
+    Assert.isType('Object', options.app)
+    return [
+      {
+        uri: '/foo',
+        title: 'foo',
+        description: 'some Foo',
+        updatedAt: new Date()
+      },
+      {
+        uri: '/foo1',
+        title: 'foo1',
+        description: 'some Foo1',
+        updatedAt: new Date()
+      }
+    ]
   }
-  it('should construct',() => {
-    expect.isType('Search',new Search())
+}
+runner.suite('Search', (it) => {
+  const search = new Search()
+  it('should construct', () => {
+    Assert.isType('Search', new Search())
   })
-  it('should have no modules',()=>{
-    expect.eq(Object.keys(search.allModules()).length,0)
+  it('should have no modules', () => {
+    Assert.eq(search.listEngines().length, 0)
   })
-  it('should add a module',()=>{
-    expect.eq(search.addModule('test',ourModule).title,'test')
+  it('should add a module', () => {
+    Assert.isType('OurSearch', search.addEngine('test', new OurSearch()))
   })
-  it('should get the module',()=>{
-    expect.eq(search.getModule('test').title,'test')
+  it('should get the module', () => {
+    Assert.isType('OurSearch', search.getEngine('test'))
   })
-  it('should remove the module',()=>{
-    expect.eq(search.removeModule('test'),'test')
+  it('should remove the module', () => {
+    Assert.eq(search.removeEngine('test'), true)
   })
-  it('should the module as removed',()=>{
-    expect.eq(Object.keys(search.allModules()).length,0)
+  it('should the module as removed', () => {
+    Assert.eq(search.listEngines().length, 0)
   })
-  it('should add a new module',()=>{
-    expect.eq(search.addModule('test',ourModule).title,'test')
+  it('should add a new module', () => {
+    Assert.isType('OurSearch', search.addEngine('test', new OurSearch()))
   })
-  it('should search by phrase',()=>{
-    return search.byPhrase({},'some foo',{start: 0,limit: 10})
-      .then((result)=>{
-        expect.eq(result.resultCount,2)
-        expect.eq(result.results.length,1)
-        expect.eq(result.results[0].moduleTitle,'test')
-        expect.eq(result.results[0].moduleResults[0].uri,'/foo')
+  it('should search by phrase', () => {
+    return search.byPhrase({}, 'some foo', { start: 0, limit: 10 })
+      .then((result) => {
+        Assert.eq(result.resultCount, 2)
+        Assert.eq(Object.keys(result.results).length, 1)
+        Assert.eq(Object.keys(result.results)[0], 'test')
+        Assert.eq(result.results.test[0].uri, '/foo')
       })
   })
+  it('should throw for non-string phrase', () => {
+    try {
+      search.byPhrase({}, ['not-a-string'], {})
+    } catch (e) {
+      Assert.match(/phrase must be string/, e.message)
+    }
+  })
 })
-if(require.main === module) runner.execute().then(code => process.exit(code))
+if (require.main === module) runner.execute().then(code => process.exit(code))

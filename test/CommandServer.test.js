@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 /**
  * Kado - High Quality JavaScript Libraries based on ES6+ <https://kado.org>
  * Copyright © 2013-2020 Bryan Tong, NULLIVEX LLC. All rights reserved.
@@ -19,46 +19,47 @@
  * along with Kado.  If not, see <https://www.gnu.org/licenses/>.
  */
 const runner = require('../lib/TestRunner').getInstance('Kado')
-const { expect } = require('../lib/Validate')
-const CommandServer = require('../lib/CommandServer')
-runner.suite('CommandServer',(it)=>{
+const Assert = require('../lib/Assert')
+const Command = require('../lib/Command')
+const CommandServer = Command.CommandServer
+runner.suite('CommandServer', (it) => {
   const cli = new CommandServer()
   cli.setVersion(require('../package.json').version)
   const testCommand = {
     description: 'test',
     options: [
-      {definition: '-t, --test <s>', description: 'Test'}
+      { definition: '-t, --test <s>', description: 'Test' }
     ],
-    action: (opts)=>{
+    action: (opts) => {
       return opts.test || opts.t
     }
   }
-  it('should construct',() => {
-    expect.isType('CommandServer',new CommandServer())
+  it('should construct', () => {
+    Assert.isType('CommandServer', new CommandServer())
   })
-  it('should have no commands',() => {
-    expect.eq(Object.keys(cli.all()).length,0)
+  it('should have no commands', () => {
+    Assert.eq(Object.keys(cli.all()).length, 0)
   })
-  it('should add a command',() => {
-    expect.eq(cli.command('test','test',testCommand),'test')
+  it('should add a command', () => {
+    Assert.eq(cli.command('test', 'test', testCommand), 'test')
   })
-  it('should have the command',() => {
-    expect.isType('Command',cli.getCommand('test','test'))
+  it('should have the command', () => {
+    Assert.isType('Command', cli.getCommand('test', 'test'))
   })
-  it('should remove the command',() => {
-    expect.eq(cli.removeCommand('test','test'),'test')
+  it('should remove the command', () => {
+    Assert.eq(cli.removeCommand('test', 'test'), 'test')
   })
-  it('should should add a new command',() => {
-    expect.eq(cli.command('test','test',testCommand),'test')
+  it('should should add a new command', () => {
+    Assert.eq(cli.command('test', 'test', testCommand), 'test')
   })
-  it('should show in all commands',() => {
-    expect.isType('Object',cli.all().test)
+  it('should show in all commands', () => {
+    Assert.isType('Object', cli.all().test)
   })
-  it('should run a command programmatically',async () => {
-    return expect.eq(await cli.run('test test -t test'),'test')
+  it('should run a command programmatically', async () => {
+    return Assert.eq(await cli.run('test test -t test'), 'test')
   })
-  it('should run a command with a full switch',async () => {
-    return expect.eq(await cli.run('test test --test=test'),'test')
+  it('should run a command with a full switch', async () => {
+    return Assert.eq(await cli.run('test test --test=test'), 'test')
   })
 })
-if(require.main === module) runner.execute().then(code => process.exit(code))
+if (require.main === module) runner.execute().then(code => process.exit(code))

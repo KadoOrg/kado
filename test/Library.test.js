@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 /**
  * Kado - High Quality JavaScript Libraries based on ES6+ <https://kado.org>
  * Copyright © 2013-2020 Bryan Tong, NULLIVEX LLC. All rights reserved.
@@ -19,43 +19,43 @@
  * along with Kado.  If not, see <https://www.gnu.org/licenses/>.
  */
 const runner = require('../lib/TestRunner').getInstance('Kado')
-const { expect } = require('../lib/Validate')
+const Assert = require('../lib/Assert')
 const Library = require('../lib/Library')
-runner.suite('Library',(it)=>{
-  let library = new Library()
-  it('should construct',() => {
-    expect.isType('Library',new Library())
+runner.suite('Library', (it) => {
+  const library = new Library()
+  it('should construct', () => {
+    Assert.isType('Library', new Library())
   })
-  it('should be empty',() => {
-    expect.eq(Object.keys(library.paths).length,0)
-    expect.eq(Object.keys(library.libraries).length,0)
+  it('should be empty', () => {
+    Assert.eq(Object.keys(library.paths).length, 0)
+    Assert.eq(Object.keys(library.libraries).length, 0)
   })
-  it('should add a search path',() => {
-    expect.eq(library.addPath('/test'),'/test')
+  it('should add a search path', () => {
+    Assert.eq(library.addPath('/test'), '/test')
   })
-  it('should show a path exists',() => {
-    expect.eq(library.existsPath('/test'),'/test')
+  it('should show a path exists', () => {
+    Assert.eq(library.existsPath('/test'), '/test')
   })
-  it('should remove a path',() => {
-    expect.eq(library.removePath('/test'),'/test')
+  it('should remove a path', () => {
+    Assert.eq(library.removePath('/test'), '/test')
   })
-  it('should add a library',() => {
-    expect.eq(library.add('test','/test'),'/test')
+  it('should add a library', () => {
+    Assert.eq(library.add('test', '/test'), '/test')
   })
-  it('should show the library exists',() => {
-    expect.eq(library.exists('test'),'/test')
+  it('should show the library exists', () => {
+    Assert.eq(library.exists('test'), '/test')
   })
-  it('should error when no library is found',() => {
-    expect.eq(library.exists('test2'),false)
+  it('should error when no library is found', () => {
+    Assert.eq(library.exists('test2'), false)
   })
-  it('should search for a library',() => {
-    expect.eq(library.search('test'),'/test')
+  it('should search for a library', () => {
+    Assert.eq(library.search('test'), '/test')
   })
-  it('should remove a library',() => {
-    expect.eq(library.remove('test'),'test')
+  it('should remove a library', () => {
+    Assert.eq(library.remove('test'), 'test')
   })
-  it('should not have the library',() => {
-    expect.eq(library.exists('test'),false)
+  it('should not have the library', () => {
+    Assert.eq(library.exists('test'), false)
   })
 })
-if(require.main === module) runner.execute().then(code => process.exit(code))
+if (require.main === module) runner.execute().then(code => process.exit(code))

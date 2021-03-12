@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 /**
  * Kado - High Quality JavaScript Libraries based on ES6+ <https://kado.org>
  * Copyright © 2013-2020 Bryan Tong, NULLIVEX LLC. All rights reserved.
@@ -19,36 +19,39 @@
  * along with Kado.  If not, see <https://www.gnu.org/licenses/>.
  */
 const runner = require('../lib/TestRunner').getInstance('Kado')
-const { expect } = require('../lib/Validate')
+const Assert = require('../lib/Assert')
 const Permission = require('../lib/Permission')
-runner.suite('Permission',(it)=>{
-  let permission = new Permission()
-  it('should construct',() => {
-    expect.isType('Permission',new Permission())
+runner.suite('Permission', (it) => {
+  const permission = new Permission()
+  it('should construct', () => {
+    Assert.isType('Permission', new Permission())
   })
-  it('should be empty',()=>{
-    expect.eq(permission.all().length,0)
+  it('should be empty', () => {
+    Assert.eq(permission.all().length, 0)
   })
-  it('should add a permission',()=>{
-    expect.eq(permission.add('foo','foo'),'foo')
+  it('should add a permission', () => {
+    Assert.eqDeep(
+      permission.add('foo', 'foo'),
+      { name: 'foo', description: 'foo' }
+    )
   })
-  it('should show the permission exists',()=>{
-    expect.eq(permission.exists('foo'),true)
+  it('should show the permission exists', () => {
+    Assert.eq(permission.exists('foo'), true)
   })
-  it('should get the permission',()=>{
-    expect.eq(permission.get('foo').name,'foo')
+  it('should get the permission', () => {
+    Assert.eq(permission.get('foo').name, 'foo')
   })
-  it('should be allowed',()=>{
-    expect.eq(permission.allowed('foo'),true)
+  it('should be allowed', () => {
+    Assert.eq(permission.allowed('foo'), true)
   })
-  it('should not be allowed against a set',()=>{
-    expect.eq(permission.allowed('foo',[]),false)
+  it('should not be allowed against a set', () => {
+    Assert.eq(permission.allowed('foo', []), false)
   })
-  it('should digest keys from per set',()=>{
-    expect.eq(permission.digest().length,1)
+  it('should digest keys from per set', () => {
+    Assert.eq(permission.digest().length, 1)
   })
-  it('should return all permissions',()=>{
-    expect.eq(permission.all().length,1)
+  it('should return all permissions', () => {
+    Assert.eq(permission.all().length, 1)
   })
 })
-if(require.main === module) runner.execute().then(code => process.exit(code))
+if (require.main === module) runner.execute().then(code => process.exit(code))
